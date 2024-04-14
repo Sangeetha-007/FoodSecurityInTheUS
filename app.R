@@ -15,10 +15,12 @@ data <- read_excel(excel_file, sheet = sheet_name)
 
 # Get US state boundaries data
 shapefile <- tigris::states()
+shapefile <- st_transform(shapefile, crs = 4326)  # Transform to WGS84 (EPSG code 4326)
+
 
 # Define a color palette based on food insecurity prevalence
 pal <- colorNumeric(
-  palette = "viridis",
+  palette = "Blues",
   domain = data$"Food insecurity prevalence"
 )
 
