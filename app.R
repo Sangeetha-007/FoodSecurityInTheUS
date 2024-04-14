@@ -1,7 +1,8 @@
 library(shiny)
-library(sf)
 library(leaflet)
 library(readxl)
+library(tigris)
+library(sf)
 
 # Specify the path to the Excel file
 excel_file <- '/Users/Sangeetha/Downloads/foodsecurity_data_file_2022.xlsx'
@@ -12,8 +13,8 @@ sheet_name <- "Food security by State"  # Replace with the actual name of your s
 # Read the specific sheet into a data frame
 data <- read_excel(excel_file, sheet = sheet_name)
 
-# Load the shapefile with spatial information
-shapefile <- st_read("/Users/sangeetha/Downloads/cb_2018_us_state_5m/cb_2018_us_state_5m.shp")
+# Get US state boundaries data
+shapefile <- tigris::states()
 
 # Define a color palette based on food insecurity prevalence
 pal <- colorNumeric(
@@ -42,7 +43,7 @@ server <- function(input, output) {
                       color = "white",
                       stroke = TRUE,
                       weight = 1,
-                      popup = ~paste("<strong>State:</strong>", data$State, "<br>",
+                      popup = ~paste("<strong>State:</strong>", NAME, "<br>",
                                      "<strong>Food Insecurity Prevalence:</strong>", data$"Food insecurity prevalence", "%"))
       })
     }
